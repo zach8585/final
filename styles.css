@@ -1,0 +1,92 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+h1{ 
+    align-items: center;
+
+}
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+}
+
+#game-container {
+    text-align: center;
+}
+
+#score {
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+canvas {
+    background-color: #000;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #111;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    position: relative; /* Allows the nav to be positioned relative to the body */
+}
+
+nav {
+    position: absolute; /* Positions the nav element at a specific location */
+    top: 10px; /* Space from the top */
+    left: 10px; /* Space from the left */
+    z-index: 10; /* Ensures the nav is above other content */
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 10px; /* Space between each link */
+}
+
+nav li {
+    display: inline;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    padding: 5px 10px;
+    transition: background-color 0.3s ease;
+}
+
+nav a:hover {
+    background-color: #333; /* Dark background on hover */
+    border-radius: 5px;
+}
+
+#game-container {
+    text-align: center;
+}
+
+#score {
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+canvas {
+    background-color: #000;
+}

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pong Game</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #111;
+            color: white;
+        }
+        canvas {
+            border: 2px solid #fff;
+        }
+    </style>
+</head>
+<body>
+    
+    <nav>
+        <ul>
+            <li><a href="index.html">snake</a></li>
+            <li><a href="home.html">home</a></li>
+            <li><a href="index1.html">pong</a></li>
+        </ul>
+    </nav>
+
+<canvas id="pong" width="800" height="400"></canvas>
+
+<script>
+    const canvas = document.getElementById('pong');
+    const context = canvas.getContext('2d');
+
+    const paddleWidth = 10, paddleHeight = 100;
+    const player = {
+        x: 0,
+        y: canvas.height / 2 - paddleHeight / 2,
+        width: paddleWidth,
+        height: paddleHeight,
+        color: '#fff',
+        dy: 0
+    };
+    const computer = {
+        x: canvas.width - paddleWidth,
+        y: canvas.height / 2 - paddleHeight / 2,
+        width: paddleWidth,
+        height: paddleHeight,
+        color: '#fff',
+        dy: 0
+    };
+    const ball = {
+        x: canvas.width / 2,
+        y: canvas.height / 2,
+        radius: 10,
+        speed: 5,
+        dx: 5,
+        dy: 5,
+        color: '#fff' 
+    };
+
+    function randomColor() {
+        const letters = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+
+    function drawPaddle(x, y, width, height, color) {
+        context.fillStyle = color;
+        context.fillRect(x, y, width, height);
+    }
+
+    function drawBall(x, y, radius, color) {
+        context.fillStyle = color;
+        context.beginPath();
+        context.arc(x, y, radius, 0, Math.PI * 2, false);
+        context.fill();
+    }
+
+    function updateBall() {
+        ball.x += ball.dx;
+        ball.y += ball.dy;
+
+        if (ball.y + ball.radius > canvas.height || ball.y - ball.radius < 0) {
+            ball.dy = -ball.dy;
+            ball.color = randomColor();  
+        }
+        if (ball.x - ball.radius < player.x + paddleWidth && ball.y > player.y && ball.y < player.y + paddleHeight ||
+            ball.x + ball.radius > computer.x - paddleWidth && ball.y > computer.y && ball.y < computer.y + paddleHeight) {
+            ball.dx = -ball.dx;
+            ball.color = randomColor(); 
+        }
+        if (ball.x + ball.radius < 0 || ball.x - ball.radius > canvas.width) {
+            resetBall();
+        }
+    }
+
+    function resetBall() {
+        ball.x = canvas.width / 2;
+        ball.y = canvas.height / 2;
+        ball.dx = -ball.dx;
+        ball.color = randomColor();  
+    }
+    function updatePaddle() {
+        if (player.dy) {
+            player.y += player.dy;
+        }
+        if (player.y < 0) player.y = 0;
+        if (player.y + player.height > canvas.height) player.y = canvas.height - player.height;
+
+        if (ball.y < computer.y + computer.height / 2) {
+            computer.dy = -3;
+        } else if (ball.y > computer.y + computer.height / 2) {
+            computer.dy = 3;
+        } else {
+            computer.dy = 0;
+        }
+
+        computer.y += computer.dy;
+
+        if (computer.y < 0) computer.y = 0;
+        if (computer.y + computer.height > canvas.height) computer.y = canvas.height - computer.height;
+    }
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowUp') {
+            player.dy = -5;
+        } else if (e.key === 'ArrowDown') {
+            player.dy = 5;
+        }
+    });
+
+    document.addEventListener('keyup', function(e) {
+        if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+            player.dy = 0;
+        }
+    });
+
+    function gameLoop() {
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        drawPaddle(player.x, player.y, player.width, player.height, player.color);
+        drawPaddle(computer.x, computer.y, computer.width, computer.height, computer.color);
+        drawBall(ball.x, ball.y, ball.radius, ball.color);
+        updateBall();
+        updatePaddle();
+        requestAnimationFrame(gameLoop);
+    }
+    gameLoop();
+</script>
+</body>
+</html>
